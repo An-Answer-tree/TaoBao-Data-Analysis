@@ -1,0 +1,72 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+import os
+from sklearn.cluster import KMeans
+plt.rcParams['font.sans-serif']=['SimHei']
+
+if not os.path.exists('CLVscore.csv'):
+    # 读取 CLV 指标文件 CLV_final.csv 文件
+    df = pd.read_csv('CLV_final.csv')
+    # 计算 CLV 列的值
+    df["Lifespan"] = df["行为时间差"] * df["行为次数"]
+    df['CLV'] = df["AOV"] * df["F"] * df["Lifespan"]
+    # 选择需要的列
+    df = df[['user_id', 'AOV', 'F', 'Lifespan', 'CLV']]
+    # 保存结果为 CSV 文件
+    df.to_csv('CLVscore.csv', index=False)
+
+# 读取 CLVscore.csv 文件
+df = pd.read_csv('CLVscore.csv')
+if 'CLV标签' not in df.columns :
+    df['CLV'].fillna(df['CLV'].mean(), inplace=True)
+    # 提取 CLV 列作为聚类的依据
+    X = df[['CLV']]
+    # 使用 K-means 聚类，设置聚类数量为3
+    kmeans = KMeans(n_clusters=3, random_state=42)
+    df['Cluster'] = kmeans.fit_predict(X)
+
+    # 定义划分规则
+    def label_users(cluster):
+        if cluster == 0:
+            return '低价值用户'
+        elif cluster == 1:
+            return '中等价值用户'
+        else:
+            return '高价值用户'
+    # 根据聚类结果生成用户标签
+    df['CLV标签'] = df['Cluster'].apply(label_users)
+    # 将结果保存为新的 CSV 文件
+    df.to_csv('CLVscore.csv', index=False)
+    # 可视化聚类结果
+    plt.figure(figsize=(10, 6))
+    sns.scatterplot(x='user_id', y='CLV', hue='CLV标签', data=df, palette='viridis')
+    plt.title('CLV聚类')
+    plt.xlabel('User ID')
+    plt.ylabel('CLV')
+    plt.show()
+
+
+# 统计三种种用户的数量
+user_counts = df['CLV标签'].value_counts()
+# 计算占比
+user_percentages = user_counts / len(df) * 100
+# 打印统计结果
+print("用户统计：")
+print(user_counts)
+print("\n用户占比：")
+print(user_percentages)
+# 可视化不同用户的占比（饼图）
+plt.figure(figsize=(12, 6))
+plt.pie(user_percentages, labels=user_percentages.index, autopct='%1.1f%%', startangle=140, colors=sns.color_palette("viridis"))
+plt.title("不同用户类型占比")
+plt.show()
+# 可视化不同用户的数量（柱状图）
+plt.figure(figsize=(10, 6))
+sns.barplot(x=user_counts.index, y=user_counts.values, palette="viridis")
+plt.title("不同用户类型数量统计")
+plt.xlabel("用户类型")
+plt.ylabel("数量")
+for i, v in enumerate(user_counts.values):
+    plt.text(i, v + 0.1, str(v), ha='center', va='bottom', fontproperties='SimHei', fontsize=10)
+plt.show()
