@@ -5,10 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="035e9dc6-09c5-454e-b02e-e924b5dbdc20" name="更改" comment="">
-      <change afterPath="$PROJECT_DIR$/user_value_classification/RFM.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/user_value_classification/RFM_Statistic_Analysis.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/user_value_classification/CLV.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/user_value_classification/CLV.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/user_value_classification/Goods_Scores.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/user_value_classification/Lifespan.csv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user_value_classification/RFM.py" beforeDir="false" afterPath="$PROJECT_DIR$/user_value_classification/RFM.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
