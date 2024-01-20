@@ -19,9 +19,9 @@ if not os.path.exists("E:\Programming_Tool\Project\Python\TaoBao-Data-Analysis\D
 if not os.path.exists("E:\Programming_Tool\Project\Python\TaoBao-Data-Analysis\DATA\\RFM.csv"):
     # 数据集导入
     df = pd.read_csv('E:\Programming_Tool\Project\Python\TaoBao-Data-Analysis\DATA\\Target.csv')
-    # 数据集按用户的id进行分组
+    # 数据集按用户的 id 进行分组
     UserAction = df.groupby(by='user_id')
-    # 先创建一个空的 DataFrame 存储R、F、M三个度量
+    # 先创建一个空的 DataFrame 存储 R、F 度量
     RFM = pd.DataFrame(index=UserAction['user_id'].unique(), columns=['R', 'F'])
     # 计算与用户购买次数，即 F 指标
     RFM['F'] = UserAction.size()
